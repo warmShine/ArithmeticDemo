@@ -131,6 +131,38 @@
     return sum;
 }
 
+/**
+ 快速排序
+
+ @param array 待排序数组
+ @param leftNumber 0
+ @param rightNumber array.coun - 1
+ */
+- (void)fetchQuickSortWithArray:(NSMutableArray *)array
+                                left:(NSInteger)leftNumber
+                               right:(NSInteger)rightNumber {
+    if (leftNumber >= rightNumber) {
+        return;
+    }
+    NSInteger i = leftNumber;
+    NSInteger j = rightNumber;
+    long key = [array[i] longValue];
+    while (i < j) {
+        while (i < j && key < [array[j] longValue]) {
+            j--;
+        }
+        array[i] = array[j];
+        while (i < j && key > [array[i] longValue]) {
+            i++;
+        }
+        array[j] = array[i];
+    }
+    array[i] = @(key);
+    /** 递归 **/
+    [self fetchQuickSortWithArray:array left:leftNumber right:(array.count - 1)];
+    [self fetchQuickSortWithArray:array left:(i + 1) right:rightNumber];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
