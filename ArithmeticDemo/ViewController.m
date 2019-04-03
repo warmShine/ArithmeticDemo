@@ -36,6 +36,9 @@
     //连续子序列的最大和
     NSLog(@"sum = %ld",[self fetchMaxSumWithArray:@[@6,@-3,@-2,@7,@-15,@1,@2,@2]]);
     
+    //最长不含重复字符的子字符串
+    NSLog(@"maxLength = %ld",[self fetchMaxLengthWithStr:@"arabcacfr"]);
+    
 }
 
 /**数组中重复的数字
@@ -162,6 +165,38 @@
     [self fetchQuickSortWithArray:array left:leftNumber right:(array.count - 1)];
     [self fetchQuickSortWithArray:array left:(i + 1) right:rightNumber];
 }
+
+/*
+最长不含重复字符的子字符串
+ 
+ **题目描述**
+ 
+ 输入一个字符串（只包含 a\~z 的字符），求其最长不含重复字符的子字符串的长度。例如对于 arabcacfr，最长不含重复字符的子字符串为 acfr，长度为 4。
+ */
+- (long)fetchMaxLengthWithStr:(NSString *)string {
+    long currentLength = 0;
+    long maxLength = 0;
+    NSMutableArray *positionArray = [NSMutableArray arrayWithCapacity:0];
+    for (int i = 0; i < 26; i++) {
+        [positionArray addObject:@(-1)];
+    }
+    for (int i = 0; i < string.length; i++) {
+        char c = [string characterAtIndex:i];
+        long position = [[positionArray objectAtIndex:(c - 'a')] longValue];
+        if (position < 0 || i - position > currentLength) {
+            currentLength++;
+        }else {
+            if (currentLength > maxLength) {
+                maxLength = currentLength;
+            }
+            currentLength = i - position;
+        }
+        [positionArray replaceObjectAtIndex:(c - 'a') withObject:@(i)];
+    }
+    
+    return maxLength;
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
